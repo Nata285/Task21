@@ -4,7 +4,7 @@ class Stack:
         self.stack = []
 
     def isEmpty(self):
-        return len(self.items) == 0
+        return len(self.stack) == 0
 
     def pop(self):
         if len(self.stack) == 0:
@@ -12,11 +12,48 @@ class Stack:
         removed = self.stack.pop()
         return removed
 
-    def push(self, item):
-        self.stack.append(item)
+    def push(self, stack):
+        self.stack.append(stack)
 
     def peek(self):
-        return self.items[-1]
+        return self.stack[-1]
 
     def size(self):
-        return len(self.items)
+        return len(self.stack)
+
+def balance_bracketes(expr):
+    s=Stack()
+    for i in range(len(expr)):
+        if (expr[i] == '(' or
+            expr[i] == '[' or
+            expr[i] == '{'):
+            s.push(expr[i])
+            continue
+
+        if s.isEmpty():
+            return False
+
+        if expr[i] == ')':
+           x = s.pop();
+           if (x == '{' or x == '['):
+              return False
+        elif expr[i] == '}':
+           x = s.pop();
+           if (x == '(' or x == '['):
+                return False
+        elif expr[i] == ']':
+            x = s.pop();
+            if (x == '(' or x == '{'):
+                return False
+
+    if s.isEmpty():
+        return True
+    else:
+        return False
+
+if __name__ == "__main__":
+    expr = "{{[(])]}}";
+    if (balance_bracketes(expr)):
+        print("Balanced");
+    else:
+        print("Not Balanced")
